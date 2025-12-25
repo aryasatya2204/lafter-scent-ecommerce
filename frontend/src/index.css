@@ -2,6 +2,18 @@
 
 @import "tailwindcss";
 
+@theme {
+  /* Palette "L'After Scent" - Premium & Elegan */
+  --color-primary: #1A1A1A;      /* Hitam Arang */
+  --color-secondary: #D4AF37;    /* Emas */
+  --color-accent: #F5F5F5;       /* Putih Tulang */
+  --color-muted: #8E8E93;        /* Abu-abu */
+
+  /* Font Configuration */
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Playfair Display", serif;
+}
+
 /* Global Styles for Premium Feel */
 body {
     @apply bg-white text-primary font-sans antialiased;
