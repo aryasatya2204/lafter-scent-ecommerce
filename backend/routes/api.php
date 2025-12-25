@@ -35,5 +35,6 @@ Route::middleware('auth:sanctum')->group(function () {
     //RUTE PRODUK
     Route::get('/products', [ProductController::class, 'index']);
     Route::post('/products', [ProductController::class, 'store']);
+    Route::post('/orders', [OrderController::class, 'store']);
     // Nanti kita tambah route products, orders, dll di sini
 });

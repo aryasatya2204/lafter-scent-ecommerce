@@ -29,6 +29,25 @@ export default function ProductDetailPage() {
     fetchProduct();
   }, [slug]);
 
+  const handleBuyNow = () => {
+        // Cek login dulu
+        const token = localStorage.getItem('auth_token');
+        if (!token) {
+            alert("Silakan login untuk membeli.");
+            navigate('/login');
+            return;
+        }
+
+        // Redirect ke Checkout bawa data
+        navigate('/checkout', {
+            state: {
+                product: product,
+                quantity: qty,
+                variantId: product.variants[0].id // Ambil ID varian pertama
+            }
+        });
+    };
+
   // Format Rupiah
   const formatRupiah = (num) => {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
@@ -99,12 +118,9 @@ export default function ProductDetailPage() {
 
             {/* Action Buttons */}
             <div className="flex gap-4">
-                <Button 
-                    fullWidth 
-                    onClick={() => alert(`Fitur Checkout untuk ${qty} item akan dibuat di Sprint berikutnya!`)}
-                >
-                    Beli Sekarang
-                </Button>
+                <Button fullWidth onClick={handleBuyNow}>
+        Beli Sekarang
+    </Button>
                 
                 <button className="px-6 py-3 border border-primary text-primary rounded-lg hover:bg-gray-50 transition">
                     ❤️

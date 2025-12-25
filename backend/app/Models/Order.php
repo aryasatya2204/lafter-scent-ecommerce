@@ -16,6 +16,8 @@ class Order extends Model
         'shipping_cost_real' => 'decimal:2',
         'shipping_cost_client' => 'decimal:2',
         'shipping_address_snapshot' => 'array', 
+        'payment_status' => 'string',
+        'order_status' => 'string',
     ];
 
     // Pembeli

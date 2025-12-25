@@ -23,6 +23,9 @@ class OrderItem extends Model
     // Relasi ke Varian Asli (Bisa null jika produk dihapus seller)
     public function variant()
     {
-        return $this->belongsTo(ProductVariant::class, 'product_variant_id');
+        return $this->belongsTo(ProductVariant::class, 'product_variant_id')->withDefault([
+            'name' => 'Produk Terhapus',
+            'price' => 0
+        ]);
     }
 }

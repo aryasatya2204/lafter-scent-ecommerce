@@ -10,6 +10,7 @@ import AdminLayout from './layouts/AdminLayout';
 import ProductListPage from './pages/admin/ProductListPage';
 import AddProductPage from './pages/admin/AddProductPage';
 import ProductDetailPage from './pages/ProductDetailPage';
+import CheckoutPage from './pages/CheckoutPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/product/:slug" element={<ProductDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
 
         {/* Rute Admin */}
         <Route path="/open-shop" element={<OpenShopPage />} /> 
