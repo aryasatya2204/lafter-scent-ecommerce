@@ -36,5 +36,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/products', [ProductController::class, 'index']);
     Route::post('/products', [ProductController::class, 'store']);
     Route::post('/orders', [OrderController::class, 'store']);
+    Route::get('/orders/shop', [OrderController::class, 'index']); // Untuk Penjual
+    Route::get('/orders/history', [OrderController::class, 'history']); // Untuk Pembeli
+    Route::get('/orders/{id}', [OrderController::class, 'show']);
+    Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus']);
     // Nanti kita tambah route products, orders, dll di sini
 });

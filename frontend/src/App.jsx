@@ -11,6 +11,8 @@ import ProductListPage from './pages/admin/ProductListPage';
 import AddProductPage from './pages/admin/AddProductPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CheckoutPage from './pages/CheckoutPage';
+import IncomingOrdersPage from './pages/admin/IncomingOrdersPage';
+import OrderDetailPage from './pages/admin/OrderDetailPage';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
 
             <Route path="products" element={<ProductListPage />} />
             <Route path="products/create" element={<AddProductPage />} />
+            <Route path="orders" element={<IncomingOrdersPage />} />
+            <Route path="orders/:id" element={<OrderDetailPage />} />
  
             {/* Nanti kita tambah ini di Sprint berikutnya: */}
             {/* <Route path="products" element={<ProductListPage />} /> */}

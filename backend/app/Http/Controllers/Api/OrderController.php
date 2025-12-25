@@ -148,4 +148,105 @@ class OrderController extends Controller
             ], 500);
         }
     }
+
+    // 1. API UNTUK PENJUAL (Melihat Pesanan Masuk)
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        
+        // Pastikan user punya toko
+        if (!$user->shop) {
+            return response()->json(['status' => 'error', 'message' => 'Anda belum punya toko'], 403);
+        }
+
+        // Ambil order yang masuk ke Toko User ini
+        $orders = Order::where('shop_id', $user->shop->id)
+            ->with(['user', 'items.variant.product']) // Load data pembeli & produk
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $orders
+        ]);
+    }
+
+    public function history(Request $request)
+    {
+        $user = $request->user();
+
+        // Ambil order milik User ini
+        $orders = Order::where('user_id', $user->id)
+            ->with(['shop', 'items.variant.product']) // Load data toko & produk
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $orders
+        ]);
+    }
+
+    // 3. LIHAT DETAIL 1 ORDER (Untuk Pembeli & Penjual)
+    public function show(Request $request, $id)
+    {
+        $user = $request->user();
+        
+        // Cari order berdasarkan ID
+        // Kita gunakan query scope agar user hanya bisa lihat order miliknya (atau tokonya)
+        $order = Order::with(['items.variant.product', 'user', 'shop'])
+            ->where('id', $id)
+            ->first();
+
+        if (!$order) {
+            return response()->json(['status' => 'error', 'message' => 'Order tidak ditemukan'], 404);
+        }
+
+        // Security Check: Pastikan yang akses adalah Pembeli ASLI atau Penjual ASLI
+        if ($order->user_id !== $user->id && $order->shop_id !== $user->shop?->id) {
+            return response()->json(['status' => 'error', 'message' => 'Tidak ada akses'], 403);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $order
+        ]);
+    }
+
+    // 4. UPDATE STATUS ORDER (Khusus Penjual)
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:processing,shipped,cancelled,completed',
+            'tracking_number' => 'nullable|string' // Resi Pengiriman
+        ]);
+
+        $user = $request->user();
+        
+        // Cari order milik toko user ini
+        $order = Order::where('id', $id)
+            ->where('shop_id', $user->shop->id)
+            ->first();
+
+        if (!$order) {
+            return response()->json(['status' => 'error', 'message' => 'Order tidak ditemukan di toko Anda'], 404);
+        }
+
+        // Update Status
+        $order->order_status = $request->status;
+        
+        // Jika status SHIPPED, simpan nomor resi (kita simpan di shipping_note sementara atau buat kolom baru)
+        // Untuk MVP, kita simpan tracking number di kolom 'shipping_note' saja sebagai tambahan info
+        if ($request->status === 'shipped' && $request->tracking_number) {
+            $order->shipping_note = $order->shipping_note . " | Resi: " . $request->tracking_number;
+        }
+
+        $order->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Status pesanan berhasil diperbarui',
+            'data' => $order
+        ]);
+    }
 }
