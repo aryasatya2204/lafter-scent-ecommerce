@@ -9,11 +9,13 @@ import OpenShopPage from './pages/admin/OpenShopPage';
 import AdminLayout from './layouts/AdminLayout';
 import ProductListPage from './pages/admin/ProductListPage';
 import AddProductPage from './pages/admin/AddProductPage';
+import ProductDetailPage from './pages/ProductDetailPage';
 
 function App() {
   return (
     <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/product/:slug" element={<ProductDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
