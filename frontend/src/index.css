@@ -1,1 +1,12 @@
+
+
 @import "tailwindcss";
+
+/* Global Styles for Premium Feel */
+body {
+    @apply bg-white text-primary font-sans antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    @apply font-serif; /* Judul pakai Serif agar mewah */
+}
