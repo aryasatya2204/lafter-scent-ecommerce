@@ -102,4 +102,33 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
+    public function publicIndex()
+    {
+        $products = Product::with(['images', 'shop', 'variants'])
+            ->where('is_active', true)
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $products
+        ]);
+    }
+
+    public function show($slug)
+    {
+        $product = Product::with(['images', 'shop', 'variants'])
+            ->where('slug', $slug)
+            ->first();
+
+        if (!$product) {
+            return response()->json(['status' => 'error', 'message' => 'Produk tidak ditemukan'], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $product
+        ]);
+    }
 }

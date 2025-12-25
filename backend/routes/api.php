@@ -16,6 +16,8 @@ use App\Http\Controllers\Api\OrderController;
 // Public Routes (Bisa diakses tanpa login)
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/public/products', [ProductController::class, 'publicIndex']);
+Route::get('/public/products/{slug}', [ProductController::class, 'show']);
 
 // Protected Routes (Harus menyertakan Token di Header)
 Route::middleware('auth:sanctum')->group(function () {
