@@ -1,18 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    // Cek apakah ada data user di LocalStorage
+  const [user] = useState(() => {
     const storedUser = localStorage.getItem('user_data');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
   const handleLogout = () => {
     localStorage.removeItem('auth_token');
@@ -28,8 +24,19 @@ export default function HomePage() {
         <div className="bg-white p-8 rounded-xl shadow-lg max-w-lg w-full">
           <p className="text-gray-500 mb-2">Selamat Datang,</p>
           <h2 className="text-2xl font-bold text-primary mb-6">{user.name}</h2>
+          
           <div className="flex gap-4 justify-center">
-             <Button onClick={() => alert('Fitur Toko Segera Hadir')}>Buka Toko</Button>
+             {/* LOGIKA TOMBOL TOKO */}
+             {user.shop ? (
+                <Button onClick={() => navigate('/admin/dashboard')}>
+                  Ke Toko Saya ({user.shop.name})
+                </Button>
+             ) : (
+                <Button onClick={() => alert('Fitur Buka Toko Segera Hadir')}>
+                  Buka Toko Gratis
+                </Button>
+             )}
+
              <button 
                 onClick={handleLogout}
                 className="px-6 py-3 border border-red-500 text-red-500 rounded-lg hover:bg-red-50 transition"

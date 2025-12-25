@@ -52,6 +52,7 @@ class AuthController extends Controller
     }
 
     // LOGIN
+    // LOGIN
     public function login(Request $request)
     {
         // 1. Validasi Input
@@ -64,8 +65,9 @@ class AuthController extends Controller
             return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
 
-        // 2. Cari User & Cek Password
-        $user = User::where('email', $request->email)->first();
+        // 2. Cari User & Load Relasi Toko (FIX DISINI)
+        // Kita gunakan 'with' untuk eager loading data shop
+        $user = User::with('shop')->where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
@@ -74,15 +76,14 @@ class AuthController extends Controller
             ], 401);
         }
 
-        // 3. Hapus token lama (Opsional, untuk single device login) lalu buat baru
-        // $user->tokens()->delete(); 
+        // 3. Buat Token
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'status' => 'success',
             'message' => 'Login berhasil',
             'data' => [
-                'user' => $user,
+                'user' => $user, 
                 'token' => $token,
                 'token_type' => 'Bearer'
             ]

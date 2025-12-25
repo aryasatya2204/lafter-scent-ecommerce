@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ShopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::post('/shops', [ShopController::class, 'store']);
     
     // Nanti kita tambah route products, orders, dll di sini
 });
