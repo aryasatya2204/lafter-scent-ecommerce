@@ -6,6 +6,7 @@ import RegisterPage from './pages/auth/RegisterPage';
 import HomePage from './pages/HomePage';
 import Dashboard from './pages/admin/Dashboard';
 import OpenShopPage from './pages/admin/OpenShopPage';
+import AdminLayout from './layouts/AdminLayout';
 
 function App() {
   return (
@@ -16,7 +17,13 @@ function App() {
 
         {/* Rute Admin */}
         <Route path="/open-shop" element={<OpenShopPage />} /> 
-        <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin" element={<AdminLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            
+            {/* Nanti kita tambah ini di Sprint berikutnya: */}
+            {/* <Route path="products" element={<ProductListPage />} /> */}
+            {/* <Route path="orders" element={<OrderListPage />} /> */}
+        </Route>
     </Routes>
   );
 }
